@@ -6,7 +6,7 @@ Created on Wed Jul 11 10:31:47 2018
 @author: zachclem
 """
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_cors import CORS
 #from io import StringIO
 #import json
@@ -24,10 +24,10 @@ def index():
     return render_template('index.html')
 
 
-#@app.route('/predict', methods=['GET','POST'])
-#def make_prediction():
-#    if request.method=='POST':
-#        return render_template('index.html', label='3')
+@app.route('/predict', methods=['GET','POST'])
+def make_prediction():
+    if request.method=='POST':
+        return render_template('index.html', label='3')
 
         
 if __name__ == '__main__':
