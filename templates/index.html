@@ -7,9 +7,9 @@
 
     <body>
         <h1>Recommendation System</h1>
-        <form action='/predict' method='post' enctype='multipart/form-data'>
-            <input type='file' name='image' value='Upload'>
-            <input type='submit' value='Predict'> {% if label %} {{label}} {% endif %}
+        <form action='/recommend' method='get' enctype='multipart/form-data'>
+            <h3>model returns:</h3>
+            {% if label %} {{label}} {% endif %}
         </form>
     </body>
 </html>
