@@ -27,11 +27,9 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/recommend/<id>', methods=['GET','POST'])
+@app.route('/recommend/<id>', methods=['GET'])
 def make_prediction(id):
-    if request.method=='POST':
-        return render_template('index.html', label='3')
-    elif request.method=='GET':
+    if request.method=='GET':
 
         conn = db.connect(host='192.168.2.88', port=3306, user='zach', passwd='1qaz!QAZ', db='old')
         cursor = conn.cursor()
@@ -49,13 +47,14 @@ def make_prediction(id):
         df.columns = ind
         df[['visit_counts1', 'visit_counts4', 'visit_counts5', 'visit_counts6', 'visit_counts7', 'visit_counts8', 'visit_total_actions1', 'visit_total_actions4', 'visit_total_actions5', 'visit_total_actions6', 'visit_total_actions7', 'visit_total_actions8', 'visit_total_time1', 'visit_total_time4', 'visit_total_time5', 'visit_total_time6', 'visit_total_time7', 'visit_total_time8']] = df[['visit_counts1', 'visit_counts4', 'visit_counts5', 'visit_counts6', 'visit_counts7', 'visit_counts8', 'visit_total_actions1', 'visit_total_actions4', 'visit_total_actions5', 'visit_total_actions6', 'visit_total_actions7', 'visit_total_actions8', 'visit_total_time1', 'visit_total_time4', 'visit_total_time5', 'visit_total_time6', 'visit_total_time7', 'visit_total_time8']].fillna(value=0)
         df[['visitor_days_since_last1', 'visitor_days_since_last4', 'visitor_days_since_last5', 'visitor_days_since_last6', 'visitor_days_since_last7', 'visitor_days_since_last8']] = df[['visitor_days_since_last1', 'visitor_days_since_last4', 'visitor_days_since_last5', 'visitor_days_since_last6', 'visitor_days_since_last7', 'visitor_days_since_last8']].fillna(value=999999)
-        
-        user = df.loc[b'\xa9J\x8f\xe5\xcc\xb1\x9b\xa6', :]
+        id_int = int(id)
+        #user = df.loc[b'\xa9J\x8f\xe5\xcc\xb1\x9b\xa6', :]
+        user = df.iloc[id_int, :]
         distances, indices = model.kneighbors([user])
         k_neighbor = indices[0][1]
         #convert user position back to id or email
 
-        return render_template('index.html', label=(k_neighbor, id))
+        return render_template('index.html', label=('recommended users for ', id, 'is', k_neighbor))
 
 if __name__ == '__main__':
     model = joblib.load("knn.pkl")
