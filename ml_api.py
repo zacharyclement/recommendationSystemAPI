@@ -60,8 +60,8 @@ def make_prediction(user_id):
         #convert user position back to id or email
 
         return render_template('index.html', label=('recommended users for ', user_id, 'is', k_neighbor))
-
+        #return k_neighbor
 if __name__ == '__main__':
     model = joblib.load("knn.pkl")
-    app.run(debug=True, port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000)
 
